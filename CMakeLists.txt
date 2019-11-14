@@ -10,7 +10,7 @@ set(THIRDPARTY_DIR "deps")
 
 # Project and Source Groups:
 project(${PROJECT_NAME})
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} solar_system.cpp)
 
 # OpenGL:
 find_package(OpenGL REQUIRED)
@@ -18,14 +18,14 @@ target_link_libraries(${PROJECT_NAME} OpenGL::GL)
 
 # GLAD:
 add_subdirectory(${THIRDPARTY_DIR}/glad)
-target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glad/include)
+# target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glad/include)
 target_link_libraries(${PROJECT_NAME} glad)
 
 # GLFW:
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS    OFF)
 option(GLFW_BUILD_DOCS 	   OFF)
-option(GLFW_INSTALL	   OFF)
+option(GLFW_INSTALL	       OFF)
 option(GLFW_VULKAN_STATIC  OFF)
 
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
