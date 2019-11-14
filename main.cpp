@@ -79,8 +79,7 @@ int main()
     glm::vec2 p(1, 2);
     std::cout << glm::to_string(p);
 
-    int wait;
-    std::cin >> wait;
+    system("pause");
     return 0;
 }
 
