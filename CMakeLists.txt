@@ -10,6 +10,7 @@ set(THIRDPARTY_DIR "deps")
 
 # Project and Source Groups:
 project(${PROJECT_NAME})
+add_executable(${PROJECT_NAME} main.cpp)
 
 # OpenGL:
 find_package(OpenGL REQUIRED)
@@ -21,14 +22,26 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glad/includ
 target_link_libraries(${PROJECT_NAME} glad)
 
 # GLFW:
+option(GLFW_BUILD_EXAMPLES OFF)
+option(GLFW_BUILD_TESTS    OFF)
+option(GLFW_BUILD_DOCS 	   OFF)
+option(GLFW_INSTALL	   OFF)
+option(GLFW_VULKAN_STATIC  OFF)
+
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
 target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glfw/include)
 target_link_libraries(${PROJECT_NAME} glfw)
 
 # GLM:
+option(GLM_TEST_ENABLE OFF)
+
 add_subdirectory(${THIRDPARTY_DIR}/glm)
-target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glm/include)
-target_link_libraries(${PROJECT_NAME} glm)
+target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glm)
+target_link_libraries(${PROJECT_NAME} glm_static)
+
+# Options:
+set(BUILD_SHARED_LIBS FALSE CACHE BOOL "Enforce static linking." FORCE)
+set(BUILD_STATIC_LIBS TRUE  CACHE BOOL "Enforce static linking." FORCE)
 
 # Visual Studio Convenience:
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
