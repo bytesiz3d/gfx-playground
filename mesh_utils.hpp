@@ -1,5 +1,5 @@
 #pragma once
-#include "mesh.cpp"
+#include "mesh.hpp"
 namespace Mesh_Utils
 {
     Mesh createMesh()
@@ -11,7 +11,7 @@ namespace Mesh_Utils
             3,
             GL_FLOAT,
             false,
-            sizeof(float) * 3,
+            0,
             0
         };
 
@@ -21,7 +21,7 @@ namespace Mesh_Utils
             4,
             GL_UNSIGNED_BYTE,
             true,
-            sizeof(GLubyte) * 4,
+            0,
             0
         };
 
@@ -66,7 +66,7 @@ namespace Mesh_Utils
 
         for (double theta = vAngleUnit; theta < __PI; theta += vAngleUnit)
         {
-            for (double phi = 0; phi < 2* __PI; phi += hAngleUnit)
+            for (double phi = 0; phi < 2 * __PI; phi += hAngleUnit)
             {
                 positions[++pIdx] = std::sin(theta) * std::sin(phi);
                 colors[++cIdx] = (positions[pIdx] + 1) / 2 * 0xFF;
@@ -91,8 +91,8 @@ namespace Mesh_Utils
         colors[++cIdx] = (positions[pIdx] + 1) / 2 * 0xFF;
         colors[++cIdx] = 0xFF;
 
-        mesh.setBufferData("positions", sizeof(positions), positions, GL_STATIC_DRAW);
-        mesh.setBufferData("colors", sizeof(colors), colors, GL_STATIC_DRAW);
+        mesh.setBufferData("positions", sizeof(GLfloat) * 3 * vertexCount, positions, GL_STATIC_DRAW);
+        mesh.setBufferData("colors", sizeof(GLubyte) * 4 * vertexCount, colors, GL_STATIC_DRAW);
 
         int elementCount = 3 * (
             hRes
@@ -135,7 +135,7 @@ namespace Mesh_Utils
             elements[++eIdx] = eP(vRes - 2, j + 1, hRes);
         }
 
-        mesh.setElementsData(sizeof(elements), elements, GL_STATIC_DRAW, elementCount, GL_UNSIGNED_INT);
+        mesh.setElementsData(sizeof(GLuint) * elementCount, elements, GL_STATIC_DRAW, elementCount, GL_UNSIGNED_INT);
         return mesh;
     }
 
@@ -158,9 +158,9 @@ namespace Mesh_Utils
         for (GLuint idx = 0; idx < 360; idx++)
             elements[idx] = idx;
 
-        mesh.setBufferData("positions", sizeof(positions), positions, GL_STATIC_DRAW);
-        mesh.setBufferData("colors", sizeof(colors), colors, GL_STATIC_DRAW);
-        mesh.setElementsData(sizeof(elements), elements, GL_STATIC_DRAW, 360, GL_UNSIGNED_INT);
+        mesh.setBufferData("positions", sizeof(float) * 360 * 3, positions, GL_STATIC_DRAW);
+        mesh.setBufferData("colors", sizeof(GLubyte) * 360 * 4, colors, GL_STATIC_DRAW);
+        mesh.setElementsData(sizeof(GLuint) * 360, elements, GL_STATIC_DRAW, 360, GL_UNSIGNED_INT);
 
         return mesh;
     }

@@ -31,9 +31,9 @@ public:
         for (GLuint i = 0; i < n; i++)
             descriptors.push_back(_descriptors[i]);
 
-        for (auto& desc: descriptors)
+        for (auto& desc : descriptors)
         {
-           glGenBuffers(1, &VBOs[desc.buffer]);
+            glGenBuffers(1, &VBOs[desc.buffer]);
         }
 
         glGenBuffers(1, &EBO);
@@ -41,7 +41,7 @@ public:
 
         glBindVertexArray(VAO);
 
-        for (auto &descriptor: descriptors)
+        for (auto& descriptor : descriptors)
         {
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[descriptor.buffer]);
 
@@ -60,7 +60,7 @@ public:
 
     ~Mesh()
     {
-        for (auto& desc: descriptors)
+        for (auto& desc : descriptors)
         {
             glDeleteBuffers(1, &VBOs[desc.buffer]);
         }

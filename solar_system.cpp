@@ -20,19 +20,19 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-#include "solar_system_data.cpp"
-#include "mesh_utils.cpp"
-#include "camera.cpp"
-#include "shader.cpp"
+#include "solar_system_data.hpp"
+#include "mesh_utils.hpp"
+#include "camera.hpp"
+#include "shader.hpp"
 
 
 bool activeDrawOrbits = true;
-const GLuint WIDTH = 1600, HEIGHT = 900;
+const GLuint WIDTH = 1280, HEIGHT = 720;
 int current_time = 0;
 
-void DrawSphere(glm::mat4 MVP, float* tint, GLuint program, Mesh* mesh);
-void DrawOrbit(glm::mat4 MVP, GLuint program, Mesh* mesh);
-void DrawSystem(glm::mat4 parent, SolarSystemDescription system, GLuint program, Mesh* sphereMesh, Mesh* orbitMesh);
+void DrawSphere(glm::mat4 MVP, float* tint, Mesh* mesh);
+void DrawOrbit(glm::mat4 MVP, Mesh* mesh);
+void DrawSystem(glm::mat4 parent, SolarSystemDescription system, Mesh* sphereMesh, Mesh* orbitMesh);
 
 int MVP_location, tint_location;
 
@@ -46,6 +46,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_SAMPLES, 16);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Solar System", NULL, NULL);
@@ -95,7 +96,7 @@ int main()
     Camera camera;
     camera.position = glm::vec3(100, 100, 100);
     camera.SetTarget(glm::vec3(0, 0, 0));
-    camera.aspectRatio = WIDTH / HEIGHT;
+    camera.aspectRatio = (float)WIDTH / HEIGHT;
     
     // God forgive me
     InitSystems();
@@ -109,9 +110,11 @@ int main()
 
         glUseProgram(shaderProgram);
 
-        DrawSystem(camera.ViewProjectionMatrix(), System0, shaderProgram, &mesh, &orbitMesh);
+        DrawSystem(camera.ViewProjectionMatrix(), System1, &mesh, &orbitMesh);
 
         glfwSwapBuffers(window);
+        
+        current_time += 5;
     }
     glfwTerminate();
     return false;
@@ -125,24 +128,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-void DrawSphere(glm::mat4 MVP, float* tint, GLuint program, Mesh* mesh)
+void DrawSphere(glm::mat4 MVP, float* tint, Mesh* mesh)
 {
-    // glUseProgram(program);
     glUniformMatrix4fv(MVP_location, 1, false, glm::value_ptr(MVP)); // TODO: transpose?
     glUniformMatrix4fv(tint_location, 1, false, &tint[0]); // TODO: transpose?
 
     mesh->draw(GL_TRIANGLES);
 }
 
-void DrawOrbit(glm::mat4 MVP, GLuint program, Mesh* mesh)
+void DrawOrbit(glm::mat4 MVP, Mesh* mesh)
 {
-    // glUseProgram(program);
     glUniformMatrix4fv(MVP_location, 1, false, glm::value_ptr(MVP)); // TODO: transpose?
 
     mesh->draw(GL_LINE_LOOP);
 }
 
-void DrawSystem(glm::mat4 parent, SolarSystemDescription system, GLuint program, Mesh* sphereMesh, Mesh* orbitMesh)
+void DrawSystem(glm::mat4 parent, SolarSystemDescription system, Mesh* sphereMesh, Mesh* orbitMesh)
 {
     glm::mat4 matPlanet = parent;
 
@@ -157,12 +158,12 @@ void DrawSystem(glm::mat4 parent, SolarSystemDescription system, GLuint program,
     matPlanet = glm::rotate(matPlanet, current_time * system.rotationSpeedAroundSelf, glm::vec3(0, 1, 0));
     matPlanet = glm::scale(matPlanet, glm::vec3(system.scale, system.scale, system.scale));
 
-    DrawSphere(matPlanet, system.tint, program, sphereMesh);
+    DrawSphere(matPlanet, system.tint, sphereMesh);
     if (activeDrawOrbits)
     {
         glm::mat4 matOrbit = parent;
-        matOrbit = glm::scale(matOrbit, glm::vec3(system.distanceFromParent, 0, 0));
-        DrawOrbit(matOrbit, program, orbitMesh);
+        matOrbit = glm::scale(matOrbit, glm::vec3(system.distanceFromParent, system.distanceFromParent, system.distanceFromParent));
+        DrawOrbit(matOrbit, orbitMesh);
     }
 
     // Draw all children:
@@ -170,7 +171,7 @@ void DrawSystem(glm::mat4 parent, SolarSystemDescription system, GLuint program,
     {
         for (auto& subSystem : system.children)
         {
-            DrawSystem(matSystem, subSystem, program, sphereMesh, orbitMesh);
+            DrawSystem(matSystem, subSystem, sphereMesh, orbitMesh);
         }
     }
 }
