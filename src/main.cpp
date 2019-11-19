@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+#include "shader.hpp"
 // Function prototypes
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -46,6 +47,9 @@ int main()
         std::cout << "Failed to initialize OpenGL context" << std::endl;
         return -1;
     }
+    
+    GLuint shaderProgram = Shader::LoadShader("../shaders/color.vert", "../shaders/color.frag");
+    glUseProgram(shaderProgram);
 
     // Define the viewport dimensions
     glViewport(0, 0, WIDTH, HEIGHT);
