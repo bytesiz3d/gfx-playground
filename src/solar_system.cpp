@@ -29,7 +29,8 @@ namespace SS
 {
     #include "solar_system_data.hpp"
 
-    bool activeDrawOrbits = true;
+    // TODO: Fix the orbits
+    bool activeDrawOrbits = false;
     const GLuint WIDTH = 1280, HEIGHT = 720;
     int current_time = 0;
 
@@ -81,7 +82,7 @@ int main()
     glViewport(0, 0, SS::WIDTH, SS::HEIGHT);
 
     // Compile and link the shader program:
-    GLuint shaderProgram = Shader::LoadShader("shader/color.vert", "shader/color.frag");
+    GLuint shaderProgram = Shader::LoadShader("../shaders/color.vert", "../shaders/color.frag");
     glUseProgram(shaderProgram);
 
     // Get the location of the uniform variables:

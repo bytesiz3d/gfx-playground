@@ -1,6 +1,9 @@
+# Created by https://www.gitignore.io/api/c++,emacs,vim,visualstudio,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=c++,emacs,vim,visualstudio,visualstudiocode
 
-# Created by https://www.gitignore.io/api/c++,emacs,visualstudio,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=c++,emacs,visualstudio,visualstudiocode
+### oc3 ###
+# Ignoring the build directory
+[Bb]uild/
 
 ### C++ ###
 # Prerequisites
@@ -32,7 +35,6 @@
 *.lib
 
 # Executables
-[Bb]uild/
 *.exe
 *.out
 *.app
@@ -87,6 +89,25 @@ flycheck_*.el
 # network security
 /network-security.data
 
+
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
 
 ### VisualStudioCode ###
 .vscode/*
@@ -447,4 +468,4 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
-# End of https://www.gitignore.io/api/c++,emacs,visualstudio,visualstudiocode
+# End of https://www.gitignore.io/api/c++,emacs,vim,visualstudio,visualstudiocode

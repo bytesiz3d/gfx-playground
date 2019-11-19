@@ -9,6 +9,5 @@ uniform mat4 MVP; // This matrix will hold all of our transformation (Model, Vie
 void main(){
     gl_Position = MVP * vec4(position, 1.0f); // Just multiply by this matrix and..... welcome to the 3rd Dimension
     vertexColor = color; // Pass the color to the fragment shader
-    gl_PointSize = 8.0/gl_Position.w;
-    // gl_PointSize = 8;
+    gl_PointSize = 8.0;
 }
