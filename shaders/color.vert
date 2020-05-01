@@ -1,13 +1,11 @@
-#version 300 es
-layout(location=0) in vec3 position;
-layout(location=1) in vec4 color; // We added a new attribute color at the location after position
+#version 400
+// Vertex attributes
+layout(location=0) in vec2 position;
+layout(location=1) in vec3 color;
 
 out vec4 vertexColor; // Since vertex shaders do not draw, we need to pass the color data to the fragment shader
 
-uniform mat4 MVP; // This matrix will hold all of our transformation (Model, View and Projection)
-
 void main(){
-    gl_Position = MVP * vec4(position, 1.0f); // Just multiply by this matrix and..... welcome to the 3rd Dimension
-    vertexColor = color; // Pass the color to the fragment shader
-    gl_PointSize = 8.0;
+    gl_Position = vec4(position, 0.0f, 1.0f);
+    vertexColor = vec4(color, 1.0f); // Pass the color to the fragment shader
 }

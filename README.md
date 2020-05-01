@@ -4,7 +4,6 @@
     - [GLAD](https://github.com/Dav1dde/glad), for loading OpenGL functions.
         - P.S. GLAD needs Python :/
     - [GLFW](https://github.com/glfw/glfw), for handling windows.
-    - [GLM](https://github.com/g-truc/glm), for handling mathematics related to the rendering process.
   
 ## Startup guide
 - Clone the repository (you may add to it later as you see fit)

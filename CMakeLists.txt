@@ -13,20 +13,20 @@ set(THIRDPARTY_DIR "deps") # This is where the third party libraries are kept
 project(${PROJECT_NAME}) # Specifies the target project
 add_executable(${PROJECT_NAME} # Creates an executable file with a name that matches PROJECT_NAME 
   src/main.cpp # Build the executable from these files
-  )
+)
 
 ## Source groups represent folders in the Visual Studio Solution Explorer
 source_group("Source"
   FILES
   src/main.cpp
-  )
+)
 
 # Suppose you have a camera class
 ## source_group("Camera"
 ##   FILES
 ##   src/Camera/Camera.h
 ##   src/Camera/Camera.cpp
-##   )
+## )
 
 
 # Linking to third party libraries:
@@ -49,13 +49,6 @@ add_subdirectory(${THIRDPARTY_DIR}/glfw)
 target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glfw/include)
 target_link_libraries(${PROJECT_NAME} glfw)
 
-## GLM:
-option(GLM_TEST_ENABLE OFF) # Disabling additional build targets
-
-add_subdirectory(${THIRDPARTY_DIR}/glm)
-target_include_directories(${PROJECT_NAME} PRIVATE ${THIRDPARTY_DIR}/glm)
-target_link_libraries(${PROJECT_NAME} glm_static)
-
 # Options:
 set(BUILD_SHARED_LIBS FALSE CACHE BOOL "Enforce static linking." FORCE) # Build static libraries
 set(BUILD_STATIC_LIBS TRUE  CACHE BOOL "Enforce static linking." FORCE)
@@ -66,6 +59,7 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT $
 
 # Adding compile definitions:
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-                           UNICODE
-                           _UNICODE
-                           _CRT_SECURE_NO_WARNINGS)
+   UNICODE
+   _UNICODE
+   _CRT_SECURE_NO_WARNINGS
+)

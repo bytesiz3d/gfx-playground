@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace Shader
 {
@@ -12,7 +13,7 @@ namespace Shader
     {
         std::string shader = "";
 
-        // Load the file:
+        // Load the file
         std::ifstream fileStream(filePath, std::ios::in);
         if (!fileStream.is_open())
         {
@@ -20,7 +21,7 @@ namespace Shader
             return "";
         }
 
-        // Fill the string line by line:
+        // Fill the string line by line
         std::string currentLine = "";
         while (!fileStream.eof())
         {
@@ -38,7 +39,7 @@ namespace Shader
      */  
     GLuint LoadShader(const char* vertexPath, const char* fragmentPath)
     {
-        // Create and load the two shaders:
+        // Create and load the two shaders
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -52,57 +53,53 @@ namespace Shader
         GLint linkStatus = GL_FALSE;
         int logLength = 0;
 
-        // Compile the vertex shader:
+        // Compile the vertex shader
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
 
-
-        // Verify that it was compiled successfully:
+        // Verify that it was compiled successfully
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileStatus);
         glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &logLength);
-
         std::string vertexShaderError;
         vertexShaderError.resize((logLength > 1) ? logLength : 1);
         glGetShaderInfoLog(vertexShader, logLength, NULL, &vertexShaderError[0]);
-        std::cout << &vertexShaderError[0] << std::endl;
+        if (!vertexShaderError.empty())
+            std::cout << vertexShaderError << std::endl;
 
 
-        // Compile the fragment shader:
+        // Compile the fragment shader
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
 
-
-        // Verify that it was compiled successfully:
+        // Verify that it was compiled successfully
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileStatus);
         glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &logLength);
-
         std::string fragmentShaderError;
         fragmentShaderError.resize((logLength > 1) ? logLength : 1);
         glGetShaderInfoLog(fragmentShader, logLength, NULL, &fragmentShaderError[0]);
-        std::cout << &fragmentShaderError[0] << std::endl;
+        if (!fragmentShaderError.empty())
+            std::cout << fragmentShaderError << std::endl;
 
 
-        // Creating and linking the shader program:
+        // Create and link the shader program
         GLuint program = glCreateProgram();
         glAttachShader(program, vertexShader);
         glAttachShader(program, fragmentShader);
         glLinkProgram(program);
 
-
-        // Verify that it linked successfully:
+        // Verify that it was linked successfully
         glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-
         std::string programError;
         fragmentShaderError.resize((logLength > 1) ? logLength : 1);
         glGetProgramInfoLog(program, logLength, NULL, &programError[0]);
-        std::cout << &programError[0] << std::endl;
+        if (!programError.empty())
+            std::cout << programError << std::endl;
 
-
+        
         // Finishing up
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
-
         return program;
     }
 }
