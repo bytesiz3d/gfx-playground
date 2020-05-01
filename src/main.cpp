@@ -47,7 +47,7 @@ int main()
         std::cout << "Failed to initialize OpenGL context" << std::endl;
         return -1;
     }
-    
+
     GLuint shaderProgram = Shader::LoadShader("../shaders/color.vert", "../shaders/color.frag");
     glUseProgram(shaderProgram);
 

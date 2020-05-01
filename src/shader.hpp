@@ -5,9 +5,9 @@
 namespace Shader
 {
     /*
-      Loads a file's ASCII content into a string and returns it.
-      Returns an empty string if it fails.
-    */
+     * Loads a file's ASCII content into a string and returns it.
+     * Returns an empty string if it fails.
+     */
     std::string LoadFile(const char* filePath)
     {
         std::string shader = "";
@@ -33,9 +33,9 @@ namespace Shader
     }
 
     /*
-      Loads the vertex and fragment shaders from their two respective paths.
-      Links the two shaders and returns the compiled program.
-    */
+     * Loads the vertex and fragment shaders from their two respective paths.
+     * Links the two shaders and returns the compiled program.
+     */  
     GLuint LoadShader(const char* vertexPath, const char* fragmentPath)
     {
         // Create and load the two shaders:
@@ -61,9 +61,9 @@ namespace Shader
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileStatus);
         glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &logLength);
 
-	std::string vertexShaderError;
-	vertexShaderError.resize((logLength > 1) ? logLength : 1);
-	glGetShaderInfoLog(vertexShader, logLength, NULL, &vertexShaderError[0]);
+        std::string vertexShaderError;
+        vertexShaderError.resize((logLength > 1) ? logLength : 1);
+        glGetShaderInfoLog(vertexShader, logLength, NULL, &vertexShaderError[0]);
         std::cout << &vertexShaderError[0] << std::endl;
 
 
@@ -76,8 +76,8 @@ namespace Shader
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileStatus);
         glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &logLength);
 
-	std::string fragmentShaderError;
-	fragmentShaderError.resize((logLength > 1) ? logLength : 1);
+        std::string fragmentShaderError;
+        fragmentShaderError.resize((logLength > 1) ? logLength : 1);
         glGetShaderInfoLog(fragmentShader, logLength, NULL, &fragmentShaderError[0]);
         std::cout << &fragmentShaderError[0] << std::endl;
 
@@ -93,9 +93,8 @@ namespace Shader
         glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
 
-        //char* programError = new char[(logLength > 1) ? logLength : 1];
-	std::string programError;
-	fragmentShaderError.resize((logLength > 1) ? logLength : 1);
+        std::string programError;
+        fragmentShaderError.resize((logLength > 1) ? logLength : 1);
         glGetProgramInfoLog(program, logLength, NULL, &programError[0]);
         std::cout << &programError[0] << std::endl;
 
