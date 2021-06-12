@@ -9,7 +9,7 @@
 - Clone the repository (you may add to it later as you see fit)
     - **--recurse-submodules** initializes third-party libraries.
       ```
-      git clone https://github.com/onecalled3bkr/gfx-playground --recurse-submodules my_project
+      git clone https://github.com/XL3/gfx-playground --recurse-submodules my_project
       ```
 - Build using [CMake](https://cmake.org/), an out-of-source build (*building to a different directory*) is always welcome.
     - An example build command using MinGW would be:
