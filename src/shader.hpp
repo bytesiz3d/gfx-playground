@@ -103,3 +103,77 @@ namespace Shader
         return program;
     }
 }
+
+namespace Shader_Utils {
+    struct Attribute {
+        const char* name;
+        GLsizeiptr array_sz;
+
+        GLint size;
+        GLenum type;
+        GLboolean normalized;
+        GLsizei stride;
+        const void* offset;
+    };
+
+    void UploadAttribute(GLuint program, const void *data, Attribute attrib) {
+        // Get attribute location
+        const GLubyte location = glGetAttribLocation(program, attrib.name);
+
+        // Generate buffer
+        GLuint buffer_object;
+        glGenBuffers(1, &buffer_object);
+
+        // Upload data to buffer
+        glBindBuffer(GL_ARRAY_BUFFER, buffer_object);
+        glBufferData(GL_ARRAY_BUFFER, attrib.array_sz, data, GL_DYNAMIC_DRAW);
+        
+        // Describe and enable data
+        glVertexAttribPointer(location, attrib.size, attrib.type, attrib.normalized, attrib.stride, attrib.offset);
+        glEnableVertexAttribArray(location);
+    }
+
+    int TestQuad() {
+        GLFWwindow *window = InitWindow(800, 600);
+        if (window == NULL) return -1; 
+
+        // Load and compile a shader
+        GLuint program = Shader::LoadShader("../shaders/generic.vert", "../shaders/generic.frag");
+        glUseProgram(program);
+
+        GLuint vao;
+        glGenVertexArrays(1, &vao);
+        glBindVertexArray(vao);
+
+        // Position data
+        const GLfloat data[] = {
+            -0.5f, -0.5f,
+            0.5f, -0.5f,
+            0.5f, 0.5f,
+            -0.5f, 0.5f,
+        };
+
+        Attribute position = {
+            "position",
+            sizeof(data),
+            2,
+            GL_FLOAT,
+            GL_FALSE,
+            0,
+            nullptr
+        };
+
+        UploadAttribute(program, data, position);
+        glClearColor(10.0f/256, 9.0f/256, 19.0f/256, 1.0f);
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            glfwSwapBuffers(window);
+        }
+
+        glfwTerminate();
+        return 0;
+    }
+}

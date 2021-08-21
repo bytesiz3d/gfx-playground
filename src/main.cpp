@@ -6,22 +6,24 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
-#include "shader.hpp"
-#include "BasicTriangle.hpp"
-
 // Function prototypes
-GLFWwindow* InitWindow();
+GLFWwindow* InitWindow(const GLuint width, const GLuint height);
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void WindowSizeCallback(GLFWwindow* window, int width, int height);
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+GLuint WIDTH = 800, HEIGHT = 600;
+
+#include "shader.hpp"
+#include "BasicTriangle.hpp"
 
 int main()
 {
+    return Shader_Utils::TestQuad();
+
     // Create the window
-    GLFWwindow* window = InitWindow();
-    if (window == NULL) return 1; 
+    GLFWwindow* window = InitWindow(800, 600);
+    if (window == NULL) return -1; 
 
     // Load and compile a shader
     GLuint shaderProgram = Shader::LoadShader("../shaders/color.vert", "../shaders/color.frag");
@@ -54,7 +56,7 @@ int main()
 }
 
 // Initializes the GLFW window and returns a pointer to it
-GLFWwindow* InitWindow() 
+GLFWwindow* InitWindow(GLuint width, GLuint height) 
 {
     std::cout << "Starting GLFW context, OpenGL v4.0" << std::endl;
     // Init GLFW
@@ -66,6 +68,9 @@ GLFWwindow* InitWindow()
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
+    WIDTH = width;
+    HEIGHT = height;
+
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "GFX Playground", NULL, NULL);
     glfwMakeContextCurrent(window);
     if (window == NULL)
@@ -105,7 +110,9 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 // Is called whenever the window is resized
 void WindowSizeCallback(GLFWwindow* window, int width, int height)
 {
+    WIDTH = width;
+    HEIGHT = height;
     // Reset viewport dimensions
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, WIDTH, HEIGHT);
 }
 
