@@ -91,7 +91,7 @@ namespace Shader
         glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
         std::string programError;
-        fragmentShaderError.resize((logLength > 1) ? logLength : 1);
+        programError.resize((logLength > 1) ? logLength : 1);
         glGetProgramInfoLog(program, logLength, NULL, &programError[0]);
         if (!programError.empty())
             std::cout << programError << std::endl;
